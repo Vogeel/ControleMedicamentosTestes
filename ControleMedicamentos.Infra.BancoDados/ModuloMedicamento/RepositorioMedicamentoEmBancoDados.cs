@@ -48,11 +48,11 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                     [QUANTIDADEDISPONIVEL] = @QUANTIDADEDISPONIVEL,
                     [FORNECEDOR_ID] = @FORNECEDOR_ID
 
-                WHERE [NUMERO] = @NUMERO";
+                WHERE [ID] = @ID";
 
         private const string sqlExcluir =
             @"DELETE FROM [TBMEDICAMENTO]
-                WHERE [NUMERO] = @NUMERO";
+                WHERE [ID] = @ID";
 
         private const string sqlSelecionarTodos =
              @"SELECT 
@@ -74,7 +74,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                 ON
                     M.[FORNECEDOR_ID] = F.ID";
 
-        private const string sqlSelecionarPorNumero =
+        private const string sqlSelecionarPorID  =
              @"SELECT 
                     M.[NUMERO] AS NUMERO,
     		        M.[NOME] AS NOME,
@@ -94,7 +94,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                 ON
                     M.[FORNECEDOR_ID] = F.ID
 		        WHERE
-                    M.[NUMERO] = @NUMERO";
+                    M.[ID] = @ID";
 
 
         public ValidationResult Inserir(Medicamento novoMedicamento)
@@ -170,21 +170,21 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
 
             conexaoComBanco.Open();           
 
-            List<Medicamento> contatos = new ();        
+            List<Medicamento> medicamentos = new ();        
 
             conexaoComBanco.Close();
 
-            return contatos;
+            return medicamentos;
         }
         private static void ConfigurarParametrosMedicamentos(Medicamento novoMedicamendo, SqlCommand comando)
         {
-            comando.Parameters.AddWithValue("NUMERO", novoMedicamendo.Numero);
-            comando.Parameters.AddWithValue("NOME", novoMedicamendo.Nome);
-            comando.Parameters.AddWithValue("DESCRICAO", novoMedicamendo.Descricao);
-            comando.Parameters.AddWithValue("LOTE", novoMedicamendo.Lote);
-            comando.Parameters.AddWithValue("VALIDADE", novoMedicamendo.Validade);
-            comando.Parameters.AddWithValue("QUANTIDADEDISPONIVEL", novoMedicamendo.QuantidadeDisponivel);
-            comando.Parameters.AddWithValue("FORNECEDOR_ID", novoMedicamendo.Fornecedor.Numero);
+            comando.Parameters.AddWithValue("@ID", novoMedicamendo.Numero);
+            comando.Parameters.AddWithValue("@NOME", novoMedicamendo.Nome);
+            comando.Parameters.AddWithValue("@DESCRICAO", novoMedicamendo.Descricao);
+            comando.Parameters.AddWithValue("@LOTE", novoMedicamendo.Lote);
+            comando.Parameters.AddWithValue("@VALIDADE", novoMedicamendo.Validade);
+            comando.Parameters.AddWithValue("@QUANTIDADEDISPONIVEL", novoMedicamendo.QuantidadeDisponivel);
+            comando.Parameters.AddWithValue("@FORNECEDOR_ID", novoMedicamendo.Fornecedor.Numero);
         }
     }
 }

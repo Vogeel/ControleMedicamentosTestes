@@ -1,6 +1,7 @@
 using ControleMedicamento.Infra.BancoDados.ModuloMedicamento;
 using ControleMedicamentos.Dominio.ModuloFornecedor;
 using ControleMedicamentos.Dominio.ModuloMedicamento;
+using ControleMedicamentos.Infra.BancoDados.ModuloFornecedor;
 using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -12,16 +13,9 @@ namespace ControleMedicamentos.Dominio.Tests.ModuloMedicamento
     {
         [TestMethod]
 
-        public void Deve_inserir_medicamento()
+        public void deev()
         {
-            Medicamento medicamento = new("nome", "10 caracteres", "Teste", DateTime.MaxValue);
-            medicamento.Fornecedor = new Fornecedor("nome", "9999-9999", "jajaja@gmail.com", "lages", "sc");
-
-            RepositorioMedicamentoEmBancoDados _repositorioMed = new();
-
-            ValidationResult vr = _repositorioMed.Inserir(medicamento);
-
-            Assert.IsTrue(vr.IsValid);
+            
         }
         
     }

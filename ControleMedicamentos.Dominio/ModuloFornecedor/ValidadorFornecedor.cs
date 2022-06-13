@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleMedicamentos.Dominio.ModuloMedicamento
+namespace ControleMedicamentos.Dominio.ModuloFornecedor
 {
-    public class ValidadorMedicamento : AbstractValidator<Medicamento>
+    public class ValidadorFornecedor : AbstractValidator<Fornecedor>
     {
-        public ValidadorMedicamento() // arrumar dps mais validacoes
+        public ValidadorFornecedor() // arrumar dps mais validações
         {
             RuleFor(x => x.Nome).NotNull();
         }
