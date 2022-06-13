@@ -212,12 +212,12 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFornecedor
 
         private static void ConfigurarParametrosFornecedor(Fornecedor novoFornecedor, SqlCommand comando)
         {
-            comando.Parameters.AddWithValue("NUMERO", novoFornecedor.Numero);
-            comando.Parameters.AddWithValue("NOME", novoFornecedor.Nome);
-            comando.Parameters.AddWithValue("TELEFONE", novoFornecedor.Telefone);
-            comando.Parameters.AddWithValue("EMAIL", novoFornecedor.Email);
-            comando.Parameters.AddWithValue("CIDADE", novoFornecedor.Cidade);
-            comando.Parameters.AddWithValue("ESTADO", novoFornecedor.Estado);
+            comando.Parameters.AddWithValue("@NUMERO", novoFornecedor.Numero);
+            comando.Parameters.AddWithValue("@NOME", novoFornecedor.Nome);
+            comando.Parameters.AddWithValue("@TELEFONE", novoFornecedor.Telefone);
+            comando.Parameters.AddWithValue("@EMAIL", novoFornecedor.Email);
+            comando.Parameters.AddWithValue("@CIDADE", novoFornecedor.Cidade);
+            comando.Parameters.AddWithValue("@ESTADO", novoFornecedor.Estado);
 
         }
     }

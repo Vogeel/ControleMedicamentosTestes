@@ -1,4 +1,4 @@
-﻿using ControleMedicamentos.Dominio.ModuloFuncionario;
+﻿using ControleMedicamentos.Dominio.ModuloPaciente;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -7,99 +7,95 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
+namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
 {
-    public class RepositorioFuncionarioEmBancoDeDados
+    public class RepositorioPacienteEmBancoDeDados
     {
         private const string enderecobanco =
-          @"Data Source=(LocalDB)\MSSqlLocalDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+         @"Data Source=(LocalDB)\MSSqlLocalDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         private const string sqlInserir =
            @" USE MEDICAMENTOSDB;
-            INSERT INTO [TBFUNCIONARIO]
+            INSERT INTO [TBPACIENTE]
             (
 
                 [NOME],
-                [LOGIN],
-                [SENHA]
+                [CARTAOSUS]
+
 
             )
             VALUES
         
             (
                 @NOME,
-                @LOGIN,
-                @SENHA
+                @CARTAOSUS
 
 
 
             ); SELECT SCOPE_IDENTITY();";
 
         private const string sqlEditar =
-            @" UPDATE [TBFUNCIONARIO]
+            @" UPDATE [TBPACIENTE]
                SET 
                     [NOME] = @NOME,
-                    [LOGIN] = @LOGIN,
-                    [SENHA] = @SENHA
+                    [CARTAOSUS] = @CARTAOSUS
 
                 WHERE [ID] = @ID";
 
         private const string sqlExcluir =
-            @"DELETE FROM [TBFUNCIONARIO]
+            @"DELETE FROM [TBPACIENTE]
                 WHERE [ID] = @ID";
 
         private const string sqlSelecionarTodos =
              @"SELECT 
                     [ID],
 		            [NOME],
-                    [LOGIN],
-                    [SENHA]
+                    [CARTAOSUS]
 
  
 	            FROM 
-                    [TBFUNCIONARIO] ";
+                    [TBPACIENTE] ";
 
         private const string sqlSelecionarPorID =
              @"SELECT 
 					    [ID],
 					    [NOME],
-					    [LOGIN],
-					    [SENHA]
+					    [CARTAOSUS]
 	            FROM 
-                    [TBFUNCIONARIO]
+                    [TBPACIENTE]
 
 		        WHERE
                     [ID] = @ID";
 
-        public ValidationResult Inserir(Funcionario novoFuncionario)
+        public ValidationResult Inserir(Paciente novoPaciente)
         {
-            var validador = new ValidadorFuncionario();
+            var validador = new ValidadorPaciente();
 
-            var resultadoValidacao = validador.Validate(novoFuncionario);
+            var resultadoValidacao = validador.Validate(novoPaciente);
 
             if (!resultadoValidacao.IsValid)
                 return resultadoValidacao;
             SqlConnection conexaoBanco = new(enderecobanco);
             SqlCommand comandoInsersao = new(sqlInserir, conexaoBanco);
 
-            ConfigurarParametrosFuncionario(novoFuncionario, comandoInsersao);
+            ConfigurarParametrosPaciente(novoPaciente, comandoInsersao);
 
             conexaoBanco.Open();
             var id = comandoInsersao.ExecuteScalar();
-            novoFuncionario.Numero = Convert.ToInt32(id);
+            novoPaciente.Numero = Convert.ToInt32(id);
 
             conexaoBanco.Close();
 
             return resultadoValidacao;
         }
 
-        public ValidationResult Excluir(Funcionario funcionarioExcluir)
+        public ValidationResult Excluir(Paciente pacienteExcluir)
         {
             SqlConnection conexaoComBanco = new(enderecobanco);
 
             SqlCommand comandoExclusao = new(sqlExcluir, conexaoComBanco);
 
-            comandoExclusao.Parameters.AddWithValue("NUMERO", funcionarioExcluir.Numero);
+            comandoExclusao.Parameters.AddWithValue("NUMERO", pacienteExcluir.Numero);
 
             conexaoComBanco.Open();
             int numeroRegistrosExcluidos = comandoExclusao.ExecuteNonQuery();
@@ -114,11 +110,11 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
             return resultadoValidacao;
         }
 
-        public ValidationResult Editar(Funcionario funcionarioEditar)
+        public ValidationResult Editar(Paciente pacienteEditar)
         {
-            var validador = new ValidadorFuncionario();
+            var validador = new ValidadorPaciente();
 
-            var resultadoValidacao = validador.Validate(funcionarioEditar);
+            var resultadoValidacao = validador.Validate(pacienteEditar);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
@@ -127,7 +123,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
 
             SqlCommand comandoEdicao = new(sqlEditar, conexaoComBanco);
 
-            ConfigurarParametrosFuncionario(funcionarioEditar, comandoEdicao);
+            ConfigurarParametrosPaciente(pacienteEditar, comandoEdicao);
 
             conexaoComBanco.Open();
             comandoEdicao.ExecuteNonQuery();
@@ -136,7 +132,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
             return resultadoValidacao;
         }
 
-        public List<Funcionario> SelecionarTodos()
+        public List<Paciente> SelecionarTodos()
         {
             SqlConnection conexaoComBanco = new(enderecobanco);
 
@@ -144,14 +140,14 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
 
             conexaoComBanco.Open();
 
-            List<Funcionario> funcionarios = new();
+            List<Paciente> pacientes = new();
 
             conexaoComBanco.Close();
 
-            return funcionarios;
+            return pacientes;
         }
 
-        public Funcionario SelecionarPorID(int ID)
+        public Paciente SelecionarPorID(int ID)
         {
             SqlConnection conexaoComBanco = new SqlConnection(enderecobanco);
 
@@ -162,7 +158,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
             conexaoComBanco.Open();
             SqlDataReader leitorRegistro = comandoSelecao.ExecuteReader();
 
-            Funcionario registro = null;
+            Paciente registro = null;
             if (leitorRegistro.Read())
                 registro = ConverterParaRegistro(leitorRegistro);
 
@@ -170,33 +166,33 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
 
             return registro;
         }
-        private Funcionario ConverterParaRegistro(SqlDataReader leitorRegistro)
+        private Paciente ConverterParaRegistro(SqlDataReader leitorRegistro)
         {
 
 
 
             int id = Convert.ToInt32(leitorRegistro["ID"]);
             string nomeFuncionario = Convert.ToString(leitorRegistro["NOME"]);
-            string login = Convert.ToString(leitorRegistro["LOGIN"]);
-            string senha = Convert.ToString(leitorRegistro["SENHA"]);
+            string cartaoSus = Convert.ToString(leitorRegistro["CARTAOSUS"]);
 
 
 
 
 
-            var registro = new Funcionario(nomeFuncionario, login, senha);
+
+            var registro = new Paciente(nomeFuncionario, cartaoSus);
             registro.Numero = id;
 
 
 
             return registro;
         }
-        private static void ConfigurarParametrosFuncionario(Funcionario novoFuncionario, SqlCommand comando)
+        private static void ConfigurarParametrosFuncionario(Paciente novoPaciente, SqlCommand comando)
         {
-            comando.Parameters.AddWithValue("@ID", novoFuncionario.Numero);
-            comando.Parameters.AddWithValue("@NOME", novoFuncionario.Nome);
-            comando.Parameters.AddWithValue("@LOGIN", novoFuncionario.Login);
-            comando.Parameters.AddWithValue("@SENHA", novoFuncionario.Senha);
+            comando.Parameters.AddWithValue("@ID", novoPaciente.Numero);
+            comando.Parameters.AddWithValue("@NOME", novoPaciente.Nome);
+            comando.Parameters.AddWithValue("@CARTAOSUS", novoPaciente.CartaoSUS);
+
 
         }
     }
