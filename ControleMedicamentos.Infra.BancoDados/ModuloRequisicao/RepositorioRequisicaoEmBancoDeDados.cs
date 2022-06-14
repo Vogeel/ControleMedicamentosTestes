@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 {
-    public class RepositorioRequisicao
+    public class RepositorioRequisicaoEmBancoDeDados
     {
     }
 }

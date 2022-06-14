@@ -187,7 +187,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
 
             return registro;
         }
-        private static void ConfigurarParametrosFuncionario(Paciente novoPaciente, SqlCommand comando)
+        private static void ConfigurarParametrosPaciente(Paciente novoPaciente, SqlCommand comando)
         {
             comando.Parameters.AddWithValue("@ID", novoPaciente.Numero);
             comando.Parameters.AddWithValue("@NOME", novoPaciente.Nome);
