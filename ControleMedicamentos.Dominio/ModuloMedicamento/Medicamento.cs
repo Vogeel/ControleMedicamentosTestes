@@ -5,8 +5,13 @@ using System.Collections.Generic;
 
 namespace ControleMedicamentos.Dominio.ModuloMedicamento
 {
+    
     public class Medicamento : EntidadeBase<Medicamento>
-    {        
+    {
+        public Medicamento()
+        {
+
+        }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Lote { get; set; }

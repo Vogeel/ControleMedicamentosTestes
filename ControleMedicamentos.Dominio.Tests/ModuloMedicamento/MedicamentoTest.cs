@@ -13,7 +13,7 @@ namespace ControleMedicamentos.Dominio.Tests.ModuloMedicamento
     {
         [TestMethod]
 
-        public void deev()
+        public void deve()
         {
             
         }

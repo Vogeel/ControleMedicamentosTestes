@@ -9,9 +9,10 @@ namespace ControleMedicamentos.Dominio.ModuloFuncionario
 {
     public class ValidadorFuncionario : AbstractValidator<Funcionario>
     {
-        public ValidadorFuncionario() // arrumar dps mais validacoes
+        public ValidadorFuncionario() 
         {
-            RuleFor(x => x.Nome).NotNull();
+            RuleFor(x => x.Nome)
+                .NotNull().NotEmpty().MinimumLength(4);
         }
     }
 }

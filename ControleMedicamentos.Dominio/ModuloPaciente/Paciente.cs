@@ -2,6 +2,10 @@
 {
     public class Paciente : EntidadeBase<Paciente>
     {
+        public Paciente()
+        {
+
+        }
         public Paciente(string nome, string cartaoSUS)
         {
             Nome = nome;

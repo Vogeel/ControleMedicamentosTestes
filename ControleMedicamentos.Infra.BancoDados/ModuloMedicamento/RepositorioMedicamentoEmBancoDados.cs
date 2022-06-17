@@ -120,25 +120,17 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             return resultadoValidacao;
         }
 
-        public ValidationResult Excluir(Medicamento medicamentoExcluir)
+        public void Excluir(int id)
         {
-            SqlConnection conexaoComBanco = new (enderecobanco);
+            SqlConnection conexaoComBanco = new SqlConnection(enderecobanco);
 
-            SqlCommand comandoExclusao = new (sqlExcluir, conexaoComBanco);
+            SqlCommand comandoExclusao = new SqlCommand(sqlExcluir, conexaoComBanco);
 
-            comandoExclusao.Parameters.AddWithValue("NUMERO", medicamentoExcluir.Numero);
+            comandoExclusao.Parameters.AddWithValue("ID", id);
 
             conexaoComBanco.Open();
-            int numeroRegistrosExcluidos = comandoExclusao.ExecuteNonQuery();
-
-            var resultadoValidacao = new ValidationResult();
-
-            if (numeroRegistrosExcluidos == 0)
-                resultadoValidacao.Errors.Add(new ValidationFailure("", "Não foi possível remover o registro"));
-
+            comandoExclusao.ExecuteNonQuery();
             conexaoComBanco.Close();
-
-            return resultadoValidacao;
         }
 
         public ValidationResult Editar(Medicamento medicamentoEditar)

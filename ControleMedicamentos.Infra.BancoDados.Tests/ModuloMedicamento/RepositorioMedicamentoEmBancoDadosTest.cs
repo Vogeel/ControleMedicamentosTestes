@@ -11,33 +11,66 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
     [TestClass]
     public class RepositorioMedicamentoEmBancoDadosTest
     {
+        Medicamento med;
+        RepositorioMedicamentoEmBancoDados _repositorioMed;
+        RepositorioFornecedorEmBancoDeDados _repositorioForn;
+        Fornecedor forn;
+        Fornecedor fornEditar;
         [TestMethod]
         public void Deve_inserir_medicamento()
         {
-            
-                RepositorioFornecedorEmBancoDeDados repositorioFornecedor = new();
 
-                Medicamento medicamento = new("nome", "10 caracteres", "Teste", DateTime.MaxValue);
+            _repositorioForn.Inserir(forn);
 
-                Fornecedor fornecedor = new Fornecedor("nome", "9999-9999", "jajaja@gmail.com", "lages", "sc");
+            med.Fornecedor = forn;
 
-                repositorioFornecedor.Inserir(fornecedor);
+            _repositorioMed.Inserir(med);
 
-                medicamento.Fornecedor = fornecedor;
+            var medicamentoEncontrado = _repositorioMed.SelecionarPorID(med.Numero);
 
-                RepositorioMedicamentoEmBancoDados _repositorioMed = new();
+            medicamentoEncontrado.Validade = DateTime.SpecifyKind(medicamentoEncontrado.Validade, DateTimeKind.Local); 
 
-                ValidationResult vr = _repositorioMed.Inserir(medicamento);
+            Assert.IsNotNull(medicamentoEncontrado);
 
-                Assert.IsTrue(vr.IsValid);
-            
+            Assert.AreEqual(med, medicamentoEncontrado);
         }
 
         [TestMethod]
         public void Deve_Excluir_Medicamento()
         {
-            Medicamento medicamento = new("nome", "10 caracteres", "Teste", DateTime.MaxValue);
-          
+            _repositorioForn.Inserir(forn);
+
+            med.Fornecedor = forn;
+
+            _repositorioMed.Inserir(med);
+
+            _repositorioMed.Excluir(med.Numero);
+
+            var medicamentoEncontrado = _repositorioMed.SelecionarPorID(med.Numero);
+
+            Assert.IsNull(medicamentoEncontrado);
+        }
+
+        [TestMethod]
+        public void Deve_Editar_Medicamento()
+        {
+            _repositorioForn.Inserir(forn);
+            _repositorioForn.Inserir(fornEditar);
+
+            med.Fornecedor = forn;
+
+            _repositorioMed.Inserir(med);
+
+            med.Nome = "estomazil";
+            med.Fornecedor = fornEditar;
+
+            _repositorioMed.Editar(med);
+
+            var medicamentoEncontrado = _repositorioMed.SelecionarPorID(med.Numero);
+
+            Assert.IsNotNull(medicamentoEncontrado);
+
+            Assert.AreEqual(med, medicamentoEncontrado);
         }
     }
 }

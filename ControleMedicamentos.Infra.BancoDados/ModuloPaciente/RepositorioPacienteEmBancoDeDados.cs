@@ -174,12 +174,6 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
             int id = Convert.ToInt32(leitorRegistro["ID"]);
             string nomeFuncionario = Convert.ToString(leitorRegistro["NOME"]);
             string cartaoSus = Convert.ToString(leitorRegistro["CARTAOSUS"]);
-
-
-
-
-
-
             var registro = new Paciente(nomeFuncionario, cartaoSus);
             registro.Numero = id;
 
